@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+        <title>ToDoList</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                max-width: 600px;
+                margin: 40px auto;
+                padding: 20px;
+            }
+            
+            h1, h2 {
+                margin-bottom: 20px;
+            }
+
+            .form-group {
+                margin-bottom: 15px;
+            }
+
+            label {
+                display: block;
+                margin-bottom: 5px;
+            }
+
+            input {
+                width: 100%;
+                padding: 8px;
+                box-sizing: border-box;
+            }
+
+            button {
+                padding: 8px 16px;
+                cursor: pointer;
+            }
+
+            ul {
+                padding: 0;
+            }
+
+            li {
+                list-style: none;
+                margin-bottom: 15px;
+                padding: 10px;
+                border: 1px solid #ccc;
+            }
+
+            a {
+                margin-left: 10px;
+            }
+
+            .logout {
+                display: block;
+                margin-top: 30px;
+            }
+        </style>
+    </head>
+    <body>
+        <form method="POST" action="/tasks">
+            <div class="form-group">
+                <label for="task">タスクを入力してください</label>
+                <input type="text" id="task" name="task">
+            </div>
+            <div class="form-group">
+                <button type="submit">追加する</button>
+            </div>
+        </form>
+        {% if message %}
+            {{ message }}
+        {% endif %}
+        <h2>タスク一覧</h2>
+        <ul>
+            {% for task in tasks %}
+                <li>{{ task[1] }}</li>
+                {% if task[2] == 0 %}
+                    未完了
+                    <a href="/complete/{{ task[0] }}">完了</a>
+                    <a href="/delete/{{ task[0] }}">削除</a>
+                    <a href="/edit/{{ task[0] }}">編集</a>
+                {% else %}
+                    完了
+                    <a href="/incomplete/{{ task[0] }}">未完了に戻す</a>
+                    <a href="/delete/{{ task[0] }}">削除</a>
+                    <a href="/edit/{{ task[0] }}">編集</a>
+                {% endif %}
+            {% endfor %}
+        </ul>
+        <a href="/logout" class="logout">ログアウト</a>
+    </body>
+</html>
